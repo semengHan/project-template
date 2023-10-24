@@ -1,0 +1,74 @@
+{
+  "type": "FeatureCollection",
+  "name": "静态图层",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "lineKey": "CJL",
+        "lineName": "城郊线",
+        "BUFF_DIST": 5.0,
+        "ORIG_FID": 0
+      },
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [
+                113.788060772982931,
+                34.591150820960252
+              ],
+              [
+                113.788024464483215,
+                34.591065824366808
+              ],
+              [
+                113.785198472465595,
+                34.591891388513261
+              ],
+              [
+                113.785234778446352,
+                34.59197638593588
+              ],
+              [
+                113.788060772982931,
+                34.591150820960252
+              ]
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "lineKey": "CJL",
+        "lineName": "城郊线",
+        "pointKey": "1",
+        "name": "路基段",
+        "icon-image": "map-icon-m-subgrade-section.png",
+        "icon-size": 0.4,
+        "icon-anchor": "bottom",
+        "textOffset": [
+          0,
+          0.5
+        ],
+        "textSize": 10
+      },
+      "geometry": {
+        "coordinates": [
+          113.78652360477355,
+          34.59154798562295
+        ],
+        "type": "Point"
+      }
+    }
+  ]
+}
