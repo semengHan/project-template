@@ -7,7 +7,6 @@ import Map from "@/components/Map";
 const Home = () => {
   return (
     <div className={styles.home}>
-      <div className={styles.header}>React Map Gl</div>
       <div className={styles.content}>
         <Map />
       </div>
