@@ -2,9 +2,14 @@ import { useState, useEffect, useRef } from "react";
 import { Source, Layer } from "react-map-gl";
 import { getRadarImageList } from "@/services/index";
 import styles from "./index.module.less";
+interface Props {
+  time: string;
+  setTimes: (obj: any) => void;
+}
 
-const RadarLayer = () => {
-  const [data, setData] = useState([]);
+const RadarLayer = (props: Props) => {
+  const [data, setData] = useState({});
+  const [bbox, setBox] = useState([]);
   const [source, setSource] = useState();
   const [layer, setLayer] = useState({
     id: "radar-layer",
@@ -23,43 +28,40 @@ const RadarLayer = () => {
 
   const getData = async () => {
     const res = await getRadarImageList({});
-    const {
-      data: { values, bbox },
-    } = res;
+    if (res.code === 200) {
+      const {
+        data: { values, bbox },
+      } = res;
 
-    const result = [];
-    for (let key in values) {
-      const obj = {
-        id: "radar-source",
-        type: "image",
-        url: "//geo2b.mojitest.com" + values[key],
-        coordinates: [
-          [Number(bbox[0]), Number(bbox[3])],
-          [Number(bbox[2]), Number(bbox[3])],
-          [Number(bbox[2]), Number(bbox[1])],
-          [Number(bbox[0]), Number(bbox[1])],
-        ],
-      };
-      result.push(obj);
+      props?.setTimes(values);
+      setData(values);
+      setBox(bbox);
     }
-    setData(result);
-    setSource(result[0]);
+  };
+
+  const loadSource = () => {
+    const obj = {
+      id: "radar-source",
+      type: "image",
+      url: "//geo2b.mojitest.com" + data[props.time],
+      coordinates: [
+        [Number(bbox[0]), Number(bbox[3])],
+        [Number(bbox[2]), Number(bbox[3])],
+        [Number(bbox[2]), Number(bbox[1])],
+        [Number(bbox[0]), Number(bbox[1])],
+      ],
+    };
+    setSource(obj);
   };
 
   useEffect(() => {
-    if (indexRef.current < data.length) {
-      setTimeout(() => {
-        setSource(data[indexRef.current]);
-      }, 1000);
-      indexRef.current++;
-    } else {
-      setSource(data[0]);
-    }
-  }, [source]);
+    loadSource();
+  }, [props.time]);
 
   useEffect(() => {
     getData();
   }, []);
+
   if (!source) {
     return null;
   }
@@ -67,7 +69,6 @@ const RadarLayer = () => {
     <Source {...source} key={"radar"}>
       <Layer {...layer} />
     </Source>
-    // <div className={styles.container}>ces</div>
   );
 };
 

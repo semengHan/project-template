@@ -8,8 +8,14 @@ import { GET, POST, PUT } from "@/utils/request";
 import { getEcData } from "@/services/index";
 import { closeToNumber, formatNumber } from "@/utils/index";
 
-const TtLayer = () => {
-  const [data, setData] = useState([]);
+interface Props {
+  time: string;
+  setTimes: (obj: any) => void;
+}
+
+const Surface = (props: Props) => {
+  const [data, setData] = useState({});
+  const [legends, setLegends] = useState([]);
   const [index, setIndex] = useState(0);
   const [source, setSource] = useState();
   const [layer, setLayer] = useState({
@@ -28,17 +34,24 @@ const TtLayer = () => {
       time: dayjs().format("YYYYMMDDHHmm"),
       elem: "TT2",
     });
-    const path = "/map/" + res.data.isobands[dayjs().format("YYYYMMDDHH00")];
-    const data = await GET(path, undefined, {
+    if (res.code === 200) {
+      props?.setTimes(res.data.isobands);
+      setData(res.data.isobands);
+      setLegends(res.data.legend);
+    }
+  };
+
+  const loadGeojson = async () => {
+    const path = "/map/" + data[props.time];
+    const bufData = await GET(path, undefined, {
       responseType: "arraybuffer",
       messageConfig: {
         show: false,
         text: "",
       },
     });
-    const geojson = geobuf.decode(new Pbf(data));
+    const geojson = geobuf.decode(new Pbf(bufData));
     const f = get(geojson, "features", []);
-    const { legend } = res.data;
 
     const featuresCollection: any = {
       type: "FeatureCollection",
@@ -69,8 +82,8 @@ const TtLayer = () => {
       }
 
       let color = "rgba(255, 255, 255, 0)";
-      for (let j = 0; j < legend.length; j++) {
-        const lg = legend[j];
+      for (let j = 0; j < legends.length; j++) {
+        const lg = legends[j];
         if (lg?.isContainLe && !lg?.isContainGe) {
           const s = closeToNumber(high, lg.end);
           if (s.closet) {
@@ -100,13 +113,16 @@ const TtLayer = () => {
       set(feature, "properties.high", formatNumber(high));
       featuresCollection.features.push(feature);
     }
-    console.log(featuresCollection, "featuresCollection");
     setSource({
       id: "tt-source",
       type: "geojson",
       data: featuresCollection,
     });
   };
+
+  useEffect(() => {
+    loadGeojson();
+  }, [props.time]);
 
   useEffect(() => {
     getData();
@@ -122,4 +138,4 @@ const TtLayer = () => {
   );
 };
 
-export default TtLayer;
+export default Surface;

@@ -10,17 +10,12 @@ import Map, {
   Popup, // 气泡弹框
 } from "react-map-gl";
 // import type { LayerProps } from "react-map-gl";
-import { getRadarImageList } from "@/services/index";
-import {
-  LayerConfig,
-  SourceConfig,
-  transformRequest,
-  LineLayer,
-  LineSource,
-} from "./config";
+import Player from "@/components/Player";
+import { LayerConfig, SourceConfig, transformRequest } from "./config";
+import styles from "./index.module.less";
 
 import RadarLayer from "./Radar";
-import TtLayer from "./TtLayer";
+import Surface from "./Surface";
 
 const MAPBOX_TOKEN =
   "pk.eyJ1IjoiampnYXJyZXR0MCIsImEiOiJjanhnM3Fud2QwZnY1M3VvN3pqZHYzZzdvIn0.jaDeTWgRsKsOeojogZzk1g"; // Set your mapbox token here
@@ -36,6 +31,24 @@ const mapStyle = {
 const CustomMap = () => {
   const [layers, setLayers] = useState(LayerConfig);
   const [sources, setSources] = useState(SourceConfig);
+  const [playerTimes, setPlayerTimes] = useState<any>([]);
+  const [autoPlay, setAutoPlay] = useState<boolean>(false);
+  const [currentTime, setCurTime] = useState("");
+
+  const handleSliderChange = (obj) => {
+    console.log(obj, "handleSliderChange");
+    setCurTime(obj.time);
+  };
+
+  const handleTimesData = (obj) => {
+    const times = [];
+    for (const time in obj) {
+      times.push({ time: time });
+    }
+    console.log(times, "times");
+    setCurTime(times[0].time);
+    setPlayerTimes(times.slice(0, 24));
+  };
 
   return (
     <>
@@ -70,12 +83,26 @@ const CustomMap = () => {
             );
           }
         })}
-        {/* <RadarLayer /> */}
-        <TtLayer />
+        <RadarLayer time={currentTime} setTimes={handleTimesData} />
+        {/* <Surface time={currentTime} setTimes={handleTimesData} /> */}
         {/* <ScaleControl position="bottom-right" /> */}
         <NavigationControl position="bottom-right" />
         <FullscreenControl position="bottom-right" />
         {/* <GeolocateControl position="bottom-right" /> */}
+        {playerTimes.length > 0 && (
+          <div className={styles.timeline}>
+            <Player
+              data={playerTimes}
+              maxLabels={8}
+              interval={1400}
+              sliderChange={handleSliderChange}
+              autoPlay={false}
+              pauseChange={(status) => {
+                setAutoPlay(status);
+              }}
+            />
+          </div>
+        )}
       </Map>
     </>
   );

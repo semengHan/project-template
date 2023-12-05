@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@ant-design/icons':
+    specifier: ^5.2.6
+    version: 5.2.6(react-dom@18.2.0)(react@18.2.0)
   '@types/react-router-dom':
     specifier: ^5.3.3
     version: 5.3.3
@@ -137,8 +140,8 @@ packages:
     resolution: {integrity: sha512-4QBZg8ccyC6LPIRii7A0bZUk3+lEDCLnhB+FVsflGdcWPPmV+j3fire4AwwoqHV/BibgvBmR9ZIo4s867smv+g==}
     dev: false
 
-  /@ant-design/icons@5.2.5(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-9Jc59v5fl5dzmxqLWtRev3dJwU7Ya9ZheoI6XmZjZiQ7PRtk77rC+Rbt7GJzAPPg43RQ4YO53RE1u8n+Et97vQ==}
+  /@ant-design/icons@5.2.6(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-4wn0WShF43TrggskBJPRqCD0fcHbzTYjnaoskdiJrVHg86yxoZ8ZUqsXvyn4WUqehRiFKnaclOhqk9w4Ui2KVw==}
     engines: {node: '>=8'}
     peerDependencies:
       react: '>=16.0.0'
@@ -148,7 +151,6 @@ packages:
       '@ant-design/icons-svg': 4.3.1
       '@babel/runtime': 7.22.11
       classnames: 2.3.2
-      lodash.camelcase: 4.3.0
       rc-util: 5.37.0(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -1169,7 +1171,7 @@ packages:
     dependencies:
       '@ant-design/colors': 7.0.0
       '@ant-design/cssinjs': 1.17.0(react-dom@18.2.0)(react@18.2.0)
-      '@ant-design/icons': 5.2.5(react-dom@18.2.0)(react@18.2.0)
+      '@ant-design/icons': 5.2.6(react-dom@18.2.0)(react@18.2.0)
       '@ant-design/react-slick': 1.0.2(react@18.2.0)
       '@babel/runtime': 7.22.11
       '@ctrl/tinycolor': 3.6.1
@@ -2143,10 +2145,6 @@ packages:
     dependencies:
       p-locate: 5.0.0
     dev: true
-
-  /lodash.camelcase@4.3.0:
-    resolution: {integrity: sha512-TwuEnCnxbc3rAvhf/LbG7tJUDzhqXyFnv3dtzLOPgCG/hODL7WFnsbwktkD7yUV0RrreP/l1PALq/YSg6VvjlA==}
-    dev: false
 
   /lodash.merge@4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}

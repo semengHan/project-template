@@ -1,0 +1,138 @@
+.sliderBar {
+  :global {
+    .ant-slider {
+
+      // 横线
+      .ant-slider-step {
+        //   height: 3px;
+        background-color: rgba(0, 0, 0, 0.15);
+
+        //   top: -20px;
+        // 标记
+        .ant-slider-dot {
+          width: 8px;
+          top: -4px;
+          border: none;
+          border-radius: 0;
+          z-index: 0;
+          background-color: transparent;
+
+          &::after {
+            content: '';
+            width: 1px;
+            height: 7px;
+            background-color: rgba(255, 255, 255, .4);
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+          }
+
+          &:last-child {
+            left: calc(100% - 1px) !important;
+          }
+        }
+
+        .mark-tooltip {
+          position: absolute;
+          left: 0;
+          bottom: 12px;
+          width: 110px;
+          border-radius: 4px;
+          line-height: 16px;
+          padding: 0 2px;
+          font-size: 12px;
+          text-align: center;
+          background: rgba(0, 0, 0, 0.5);
+          display: none;
+          color: #fff;
+          transform: translateX(-50%);
+
+          &::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: calc(50% - 2px);
+            border: 2px solid transparent;
+            border-left-color: rgba(0, 0, 0, 0.5);
+            border-bottom-color: rgba(0, 0, 0, 0.5);
+            transform: rotate(-45deg);
+          }
+
+          &.show {
+            display: block;
+          }
+        }
+      }
+
+      // .ant-slider-rail {
+      //   z-index: 1;
+      //   height: 40px;
+      //   top: -32px;
+      //   background: linear-gradient(
+      //     180deg,
+      //     rgba(47, 83, 230, 0.2) 0%,
+      //     rgba(212, 233, 254, 0.2) 100%
+      //   );
+      //   width: calc(100% + 40px);
+      // }
+      .ant-slider-track {
+        border-radius: 0;
+        top: 4px;
+        background: #fff;
+        z-index: 10;
+        border-radius: 2px;
+        pointer-events: none;
+      }
+
+      .ant-slider-mark {
+        font-size: 12px;
+        top: 12px;
+        color: #29292a;
+
+        .ant-slider-mark-text {
+          &:last-child {
+            left: 100% !important;
+          }
+        }
+      }
+
+      // 游标
+      .ant-slider-handle {
+        transform: translate(-50%);
+        border-radius: 50%;
+        border: none;
+        box-shadow: 0 0 1px 5px rgba(11, 206, 225, .4);
+        background-color: #fdfeff;
+        width: 8px;
+        height: 8px;
+
+        &:after {
+          display: none;
+        }
+      }
+    }
+
+    .ant-slider-mark-text {
+      white-space: nowrap;
+    }
+
+    .ant-tooltip {
+      z-index: 10;
+      font-size: 12px;
+
+      .ant-tooltip-arrow:before {
+        background-color: #fff;
+      }
+
+      .ant-tooltip-inner {
+        background-color: #fff;
+        color: #29292A;
+        box-shadow: 0px 4px 30px 0px rgba(2, 23, 68, 0.21);
+        min-height: 14px;
+        line-height: 14px;
+        padding: 4px;
+        border-radius: 4px;
+      }
+    }
+  }
+}
