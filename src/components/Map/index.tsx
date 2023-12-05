@@ -9,7 +9,7 @@ import Map, {
   Marker, // 标点
   Popup, // 气泡弹框
 } from "react-map-gl";
-// import type { LayerProps } from "react-map-gl";
+import { Radio } from "antd";
 import Player from "@/components/Player";
 import { LayerConfig, SourceConfig, transformRequest } from "./config";
 import styles from "./index.module.less";
@@ -34,6 +34,7 @@ const CustomMap = () => {
   const [playerTimes, setPlayerTimes] = useState<any>([]);
   const [autoPlay, setAutoPlay] = useState<boolean>(false);
   const [currentTime, setCurTime] = useState("");
+  const [currentLayer, setCurLayer] = useState("TT2");
 
   const handleSliderChange = (obj) => {
     console.log(obj, "handleSliderChange");
@@ -48,6 +49,11 @@ const CustomMap = () => {
     console.log(times, "times");
     setCurTime(times[0].time);
     setPlayerTimes(times.slice(0, 24));
+  };
+
+  const handleRadioChange = (e) => {
+    console.log(e, "eee");
+    setCurLayer(e.target.value);
   };
 
   return (
@@ -83,8 +89,28 @@ const CustomMap = () => {
             );
           }
         })}
-        <RadarLayer time={currentTime} setTimes={handleTimesData} />
-        {/* <Surface time={currentTime} setTimes={handleTimesData} /> */}
+        {currentLayer === "RADAR" && (
+          <RadarLayer time={currentTime} setTimes={handleTimesData} />
+        )}
+        {(currentLayer === "TT2" || currentLayer === "WS") && (
+          <Surface
+            layerId={currentLayer}
+            time={currentTime}
+            setTimes={handleTimesData}
+          />
+        )}
+
+        <div className={styles.layerCon}>
+          <Radio.Group
+            value={currentLayer}
+            buttonStyle="solid"
+            onChange={handleRadioChange}
+          >
+            <Radio.Button value="TT2">温度</Radio.Button>
+            <Radio.Button value="WS">风力</Radio.Button>
+            <Radio.Button value="RADAR">雷达</Radio.Button>
+          </Radio.Group>
+        </div>
         {/* <ScaleControl position="bottom-right" /> */}
         <NavigationControl position="bottom-right" />
         <FullscreenControl position="bottom-right" />
