@@ -10,19 +10,22 @@ import Map, {
   Popup, // 气泡弹框
 } from "react-map-gl";
 import { Radio } from "antd";
+import dayjs from "dayjs";
 import Player from "@/components/Player";
 import { LayerConfig, SourceConfig, transformRequest } from "./config";
 import styles from "./index.module.less";
+import * as img from "@/assets/icons/index";
 
 import RadarLayer from "./Radar";
 import Surface from "./Surface";
+import { stationPoint, StationType } from "./const";
 
 const MAPBOX_TOKEN =
   "pk.eyJ1IjoiampnYXJyZXR0MCIsImEiOiJjanhnM3Fud2QwZnY1M3VvN3pqZHYzZzdvIn0.jaDeTWgRsKsOeojogZzk1g"; // Set your mapbox token here
 
 const mapStyle = {
   version: 8,
-  glyphs: "./fonts/{fontstack}/{range}.pbf",
+  glyphs: "./font/{fontstack}/{range}.pbf",
   sprite: "http://custom/images/sprites/sprites",
   sources: {},
   layers: [],
@@ -34,27 +37,60 @@ const CustomMap = () => {
   const [playerTimes, setPlayerTimes] = useState<any>([]);
   const [autoPlay, setAutoPlay] = useState<boolean>(false);
   const [currentTime, setCurTime] = useState("");
-  const [currentLayer, setCurLayer] = useState("TT2");
+  const [currentLayer, setCurLayer] = useState("RADAR");
+  const [popupInfo, setPopupInfo] = useState(null);
 
   const handleSliderChange = (obj) => {
-    console.log(obj, "handleSliderChange");
     setCurTime(obj.time);
   };
 
   const handleTimesData = (obj) => {
     const times = [];
+    const now = dayjs().format("YYYYMMDDHH00");
     for (const time in obj) {
       times.push({ time: time });
     }
-    console.log(times, "times");
-    setCurTime(times[0].time);
-    setPlayerTimes(times.slice(0, 24));
+    if (currentLayer === "RADAR") {
+      setCurTime(times[0].time);
+      setPlayerTimes(times.slice(0, 24));
+    } else {
+      const index = times.findIndex((time) => time.time === now);
+      setCurTime(times[index].time);
+      times.splice(0, index);
+      setPlayerTimes(times.slice(0, 24));
+    }
   };
 
   const handleRadioChange = (e) => {
-    console.log(e, "eee");
     setCurLayer(e.target.value);
+    setCurTime("");
   };
+
+  const markers = useMemo(
+    () =>
+      stationPoint.map((station, index) => (
+        <Marker
+          key={`marker-${index}`}
+          longitude={station.geometry.coordinates[0]}
+          latitude={station.geometry.coordinates[1]}
+          anchor={StationType[station.properties.type].anchor}
+          onClick={(e) => {
+            // If we let the click event propagates to the map, it will immediately close the popup
+            // with `closeOnClick: true`
+            e.originalEvent.stopPropagation();
+            setPopupInfo(station);
+          }}
+        >
+          <img
+            style={{
+              width: "50%",
+            }}
+            src={img[StationType[station.properties.type].icon]}
+          />
+        </Marker>
+      )),
+    []
+  );
 
   return (
     <>
@@ -99,7 +135,7 @@ const CustomMap = () => {
             setTimes={handleTimesData}
           />
         )}
-
+        {markers}
         <div className={styles.layerCon}>
           <Radio.Group
             value={currentLayer}
@@ -128,6 +164,19 @@ const CustomMap = () => {
               }}
             />
           </div>
+        )}
+
+        {popupInfo && (
+          <Popup
+            anchor="bottom"
+            longitude={Number(popupInfo?.geometry.coordinates[0])}
+            latitude={Number(popupInfo?.geometry.coordinates[1])}
+            offset={[0, -60]}
+            onClose={() => setPopupInfo(null)}
+            closeButton={false}
+          >
+            <div>站点：{popupInfo?.properties.name}</div>
+          </Popup>
         )}
       </Map>
     </>

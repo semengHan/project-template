@@ -14,6 +14,37 @@ interface Props {
   setTimes: (obj: any) => void;
 }
 
+const labelLayer = {
+  id: "label-layer",
+  type: "symbol",
+  source: "tt-source",
+  zIndex: 130,
+  layout: {
+    "text-anchor": "center",
+    // 'text-field': [
+    //   'format',
+    //   ['concat', ['get', 'low'], ''],
+    //   {},
+    //   ' - ',
+    //   {},
+    //   ['concat', ['get', 'high'], ''],
+    //   {},
+    // ],
+    "text-field": ["get", "label"],
+    "text-pitch-alignment": "viewport",
+    "text-max-angle": 25,
+    "text-padding": 5,
+    "text-size": 16,
+    "text-font": ["Sans"],
+    "text-allow-overlap": true,
+  },
+  paint: {
+    "text-halo-width": 1,
+    "text-halo-color": "rgb(255,255,255)",
+    "text-color": "rgba(0,0,0,0.9)",
+  },
+};
+
 const Surface = (props: Props) => {
   const [data, setData] = useState({});
   const [legends, setLegends] = useState([]);
@@ -115,6 +146,7 @@ const Surface = (props: Props) => {
         set(feature, "properties.high", formatNumber(high));
         featuresCollection.features.push(feature);
       }
+
       setSource({
         id: "tt-source",
         type: "geojson",
@@ -129,6 +161,7 @@ const Surface = (props: Props) => {
 
   useEffect(() => {
     getData();
+    loadGeojson();
   }, [props.layerId]);
 
   if (!source) {
@@ -137,6 +170,7 @@ const Surface = (props: Props) => {
   return (
     <Source {...source} key={"tt"}>
       <Layer {...layer} />
+      <Layer {...labelLayer} />
     </Source>
   );
 };
