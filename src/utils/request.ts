@@ -88,7 +88,7 @@ const requestSuccess = (config: RequestConfig): RequestConfig => {
   });
 
   const token =
-    "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6Ijk3YzVmNTQ1LTYyMjQtNDJiMC04YzQ2LWY0MmVlZGRiMGYzNSJ9.eSV-ld6rGRi1seq2SZyxwt8PKKqqQvLvYZzyJ65noZZAl4wZnwCVWe-hwXrLzCD2RPRjH5-tk9-rZRqp_IdESA";
+    "eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjZjZThlN2U4LWQxNWQtNGYxMi04ODQzLTMxZDRkYTIzZjZhOCJ9.ZLfb9V3ldOS4VTFVfb7eqYEyKoR2h5rpu_t8dNTAYKWX38rVx0bEVJx9iDQFvX0Nfcdy3hT_FLO_sJoHScqKJw";
   if (token) {
     set(newConfig, "headers.Authorization", `Bearer ${token}`);
   }

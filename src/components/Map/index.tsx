@@ -20,8 +20,7 @@ import RadarLayer from "./Radar";
 import Surface from "./Surface";
 import { stationPoint, StationType } from "./const";
 
-const MAPBOX_TOKEN =
-  "pk.eyJ1IjoiampnYXJyZXR0MCIsImEiOiJjanhnM3Fud2QwZnY1M3VvN3pqZHYzZzdvIn0.jaDeTWgRsKsOeojogZzk1g"; // Set your mapbox token here
+const MAPBOX_TOKEN = ""; // Set your mapbox token here
 
 const mapStyle = {
   version: 8,
@@ -83,7 +82,7 @@ const CustomMap = () => {
         >
           <img
             style={{
-              width: "50%",
+              width: "36px",
             }}
             src={img[StationType[station.properties.type].icon]}
           />
@@ -171,11 +170,17 @@ const CustomMap = () => {
             anchor="bottom"
             longitude={Number(popupInfo?.geometry.coordinates[0])}
             latitude={Number(popupInfo?.geometry.coordinates[1])}
-            offset={[0, -60]}
+            offset={[0, -44]}
             onClose={() => setPopupInfo(null)}
             closeButton={false}
           >
-            <div>站点：{popupInfo?.properties.name}</div>
+            <div className={styles.popContent}>
+              <img
+                style={{ width: 28 }}
+                src={img[StationType[popupInfo.properties.type].icon]}
+              />
+              {popupInfo?.properties.name}
+            </div>
           </Popup>
         )}
       </Map>

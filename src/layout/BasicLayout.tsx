@@ -10,6 +10,7 @@ const BasicLayout = () => {
         <Space>
           <Link to="/">Home</Link>
           <Link to="articleList">ArticleList</Link>
+          <Link to="zustand">Zustand</Link>
         </Space>
       </div>
       {/* Outlet相当于是子路由的占位符 */}
