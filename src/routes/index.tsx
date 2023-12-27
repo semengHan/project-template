@@ -1,8 +1,9 @@
+import React, { lazy } from "react";
 import BasicLayout from "@/layout/BasicLayout";
 import Home from "@/pages/Home";
-import ArticleList from "@/pages/Article";
-import Detail from "@/pages/Detail";
-import Zustand from "@/pages/Zustand";
+// import ArticleList from "@/pages/Article";
+// import Detail from "@/pages/Detail";
+// import Zustand from "@/pages/Zustand";
 import NotFound from "@/pages/NotFound";
 
 const routes = [
@@ -15,22 +16,22 @@ const routes = [
         element: <Home />,
       },
       {
-        path: "/articleList",
-        element: <ArticleList />,
+        path: "/article",
+        element: React.createElement(lazy(() => import("../pages/Article"))),
       },
       {
-        path: "/articleList/:id",
-        element: <Detail />,
+        path: "/article/:id",
+        element: React.createElement(lazy(() => import("../pages/Detail"))),
       },
       {
         path: "/zustand",
-        element: <Zustand />,
-      },
-      {
-        path: "*",
-        element: <NotFound />,
+        element: React.createElement(lazy(() => import("../pages/Zustand"))),
       },
     ],
+  },
+  {
+    path: "*",
+    element: <NotFound />,
   },
 ];
 

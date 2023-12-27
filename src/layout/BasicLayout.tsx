@@ -1,13 +1,9 @@
-import { useState } from "react";
+import { useState, Suspense, useContext } from "react";
 import { Link, Outlet } from "react-router-dom";
-import { Layout, Space, Menu, Button } from "antd";
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-} from "@ant-design/icons";
+import { Layout, Menu, Button, Spin } from "antd";
+import Icon from "@/utils/Icon";
+import { useBearStore } from "@/store/index";
+
 const { Header, Sider, Content } = Layout;
 import styles from "./index.module.less";
 
@@ -18,15 +14,20 @@ const layoutStyle = {
 
 const BasicLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
-
-  const handleSelect = () => {};
+  const { menus } = useBearStore();
   return (
     <div className={styles.container}>
       <Layout style={layoutStyle}>
         <Header className={styles.header}>
           <Button
             type="text"
-            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+            icon={
+              collapsed ? (
+                <Icon icon="MenuUnfoldOutlined" />
+              ) : (
+                <Icon icon="MenuFoldOutlined" />
+              )
+            }
             onClick={() => setCollapsed(!collapsed)}
             style={{
               fontSize: "16px",
@@ -45,30 +46,15 @@ const BasicLayout = () => {
           >
             <Menu
               mode="inline"
-              defaultSelectedKeys={["1"]}
-              onSelect={handleSelect}
-              items={[
-                {
-                  key: "1",
-                  icon: <UserOutlined />,
-                  label: <Link to="/">Home</Link>,
-                },
-                {
-                  key: "2",
-                  icon: <VideoCameraOutlined />,
-                  label: <Link to="articleList">ArticleList</Link>,
-                },
-                {
-                  key: "3",
-                  icon: <UploadOutlined />,
-                  label: <Link to="zustand">Zustand</Link>,
-                },
-              ]}
+              // defaultSelectedKeys={menus[0]?.key}
+              items={menus}
             />
           </Sider>
           <Content className={styles.container}>
-            {/* Outlet相当于是子路由的占位符 */}
-            <Outlet />
+            <Suspense fallback={<Spin size="large" />}>
+              {/* Outlet相当于是子路由的占位符 */}
+              <Outlet />
+            </Suspense>
           </Content>
         </Layout>
       </Layout>
